@@ -18,7 +18,7 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-export const ImageGallery = items => {
+export const ImageGallery = ({ items }) => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleImageClick = img => {
@@ -48,11 +48,7 @@ export const ImageGallery = items => {
           style={customStyles}
           contentLabel="Image Modal"
         >
-          <ImageModal
-            src={selectedImage}
-            alt={selectedImage}
-            onClick={handleModalClose}
-          ></ImageModal>
+          <ImageModal src={selectedImage} alt={selectedImage}></ImageModal>
         </Modal>
       )}
     </>

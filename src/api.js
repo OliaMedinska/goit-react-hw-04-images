@@ -13,6 +13,6 @@ axios.defaults.params = {
 
 export const fetchImages = async (namePhoto, page = 1, perPage = 12 ) => {
     const response = await axios.get(`/?q=${namePhoto}&page=${page}&per_page={perPage}`);
-    return response.data.hits;
+    return response.data;
   }
   

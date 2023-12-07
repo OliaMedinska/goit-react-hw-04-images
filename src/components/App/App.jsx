@@ -10,13 +10,15 @@ export const App = () => {
   const [namePhoto, setNamePhoto] = useState('');
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadMore, setLoadMore] = useState(false);
 
   useEffect(() => {
     async function updatedImages() {
       try {
         const newImages = await fetchImages(namePhoto, page);
         setIsLoading(true);
-        setGalleryItems(prevItems => [...prevItems, ...newImages]);
+        setGalleryItems(prevItems => [...prevItems, ...newImages.hits]);
+        setLoadMore(page < Math.ceil(newImages.totalHits / 12));
       } catch (error) {
         console.log('Something wrong...');
       } finally {
@@ -44,7 +46,9 @@ export const App = () => {
       <Searchbar onSubmit={onSubmitPhoto} />
       <ImageGallery items={galleryItems} />
       {isLoading && <Loader></Loader>}
-      {galleryItems.length >= 12 && <LoaderButton onClick={increasePage} />}
+      {galleryItems.length > 0 && loadMore && (
+        <LoaderButton onClick={increasePage} />
+      )}
     </>
   );
 };
