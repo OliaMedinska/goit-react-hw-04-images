@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { GalleryList } from './ImageGallery.styled';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import Modal from 'react-modal';
@@ -18,54 +18,43 @@ const customStyles = {
 
 Modal.setAppElement('#root');
 
-export class ImageGallery extends Component {
-  state = {
-    selectedImage: null,
+export const ImageGallery = items => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageClick = img => {
+    setSelectedImage(img);
   };
 
-  handleImageClick = img => {
-    this.setState({
-      selectedImage: img,
-    });
+  const handleModalClose = () => {
+    setSelectedImage(null);
   };
 
-  handleModalClose = () => {
-    this.setState({
-      selectedImage: null,
-    });
-  };
-
-  render() {
-    const { items } = this.props;
-    const { selectedImage } = this.state;
-
-    return (
-      <>
-        <GalleryList>
-          {items.map(({ id, largeImageURL, webformatURL, tags }) => (
-            <ImageGalleryItem
-              key={id}
-              imgWeb={webformatURL}
-              name={tags}
-              onImageClick={() => this.handleImageClick(largeImageURL)}
-            />
-          ))}
-        </GalleryList>
-        {selectedImage && (
-          <Modal
-            isOpen={true}
-            onRequestClose={this.handleModalClose}
-            style={customStyles}
-            contentLabel="Image Modal"
-          >
-            <ImageModal
-              src={selectedImage}
-              alt={selectedImage}
-              onClick={this.handleModalClose}
-            ></ImageModal>
-          </Modal>
-        )}
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <GalleryList>
+        {items.map(({ id, largeImageURL, webformatURL, tags }) => (
+          <ImageGalleryItem
+            key={id}
+            imgWeb={webformatURL}
+            name={tags}
+            onImageClick={() => handleImageClick(largeImageURL)}
+          />
+        ))}
+      </GalleryList>
+      {selectedImage && (
+        <Modal
+          isOpen={true}
+          onRequestClose={handleModalClose}
+          style={customStyles}
+          contentLabel="Image Modal"
+        >
+          <ImageModal
+            src={selectedImage}
+            alt={selectedImage}
+            onClick={handleModalClose}
+          ></ImageModal>
+        </Modal>
+      )}
+    </>
+  );
+};
