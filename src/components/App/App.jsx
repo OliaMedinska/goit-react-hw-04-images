@@ -14,6 +14,10 @@ export const App = () => {
 
   useEffect(() => {
     async function updatedImages() {
+      if (namePhoto === '') {
+        return;
+      }
+
       try {
         const newImages = await fetchImages(namePhoto, page);
         setIsLoading(true);
